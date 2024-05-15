@@ -6,6 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.example.calculatorsimple.ui.theme.CalculatorSimpleTheme
 
 class MainActivity : ComponentActivity() {
@@ -45,9 +48,8 @@ fun Calculator() {
     var error1 by remember { mutableStateOf(false) }
     var error2 by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf("") }
-    //var op: (Double, Double) -> Double = { _, _ -> 0.0 }
-    //var operation by remember { mutableStateOf(op) }
-    var buttonsEnabled = !error1 && !error2
+    val buttonsEnabled by remember { mutableStateOf(!error1 && !error2) }
+
     val plus: (Double, Double) -> Double = { n1, n2 -> n1 + n2 }
     val minus: (Double, Double) -> Double = { n1, n2 -> n1 - n2 }
     val onTextChange1 = { text: String ->
@@ -59,7 +61,7 @@ fun Calculator() {
         error2 = text.toDoubleOrNull() == null
     }
     val calculate = { operation: (Double, Double) -> Double ->
-        if (error1 || error1) {
+        if (error1 || error2) {
             result = "Invalid input"
         } else {
             val number1 = numberStr1.toDouble()
@@ -69,7 +71,8 @@ fun Calculator() {
         }
     }
 
-    Column {
+    Column(modifier = Modifier.padding(10.dp)) {
+        Text("Calculator", style = MaterialTheme.typography.headlineLarge)
         NumberTextField(
             value = numberStr1,
             onValueChange = onTextChange1,
@@ -82,26 +85,41 @@ fun Calculator() {
             label = "Enter a number",
             error = error2
         )
-        Row {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            //horizontalArrangement = Arrangement.SpaceBetween
+        ) {
             Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp),
                 onClick = { calculate(plus) },
                 enabled = buttonsEnabled
             ) {
                 Text("+")
             }
             Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp),
                 onClick = { calculate(minus) },
                 enabled = buttonsEnabled
             ) {
                 Text("-")
             }
             Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp),
                 onClick = { calculate { n1, n2 -> n1 * n2 } },
                 enabled = buttonsEnabled
             ) {
                 Text("*")
             }
             Button(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp),
                 onClick = { calculate { n1, n2 -> n1 / n2 } },
                 enabled = buttonsEnabled
             ) {
@@ -120,6 +138,7 @@ fun NumberTextField(
     error: Boolean
 ) {
     OutlinedTextField(
+        modifier = Modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
