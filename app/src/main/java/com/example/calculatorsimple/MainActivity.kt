@@ -135,10 +135,11 @@ fun NumberTextField(
     value: String,
     onValueChange: (String) -> Unit,
     label: String,
-    error: Boolean
+    error: Boolean,
+    modifier: Modifier = Modifier
 ) {
     OutlinedTextField(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         value = value,
         onValueChange = onValueChange,
         label = { Text(label) },
@@ -148,7 +149,7 @@ fun NumberTextField(
     )
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, widthDp = 500, heightDp = 500 )
 @Composable
 fun CalculatorPreview() {
     CalculatorSimpleTheme {
