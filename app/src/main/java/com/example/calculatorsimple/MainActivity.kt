@@ -42,7 +42,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Calculator() {
+fun Calculator(modifier: Modifier = Modifier) {
     var numberStr1 by remember { mutableStateOf("0") }
     var numberStr2 by remember { mutableStateOf("0") }
     var error1 by remember { mutableStateOf(false) }
@@ -71,7 +71,7 @@ fun Calculator() {
         }
     }
 
-    Column(modifier = Modifier.padding(10.dp)) {
+    Column(modifier = modifier.padding(10.dp)) {
         Text("Calculator", style = MaterialTheme.typography.headlineLarge)
         NumberTextField(
             value = numberStr1,
