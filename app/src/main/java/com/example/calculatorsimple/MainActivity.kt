@@ -48,7 +48,6 @@ fun Calculator(modifier: Modifier = Modifier) {
     var error1 by remember { mutableStateOf(false) }
     var error2 by remember { mutableStateOf(false) }
     var result by remember { mutableStateOf("") }
-    val buttonsEnabled by remember { mutableStateOf(!error1 && !error2) }
 
     val plus: (Double, Double) -> Double = { n1, n2 -> n1 + n2 }
     val minus: (Double, Double) -> Double = { n1, n2 -> n1 - n2 }
@@ -90,11 +89,12 @@ fun Calculator(modifier: Modifier = Modifier) {
             //horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Button(
+                enabled = !error1 && !error2,
                 modifier = Modifier
                     .weight(1f)
                     .padding(8.dp),
                 onClick = { calculate(plus) },
-                enabled = buttonsEnabled
+                //enabled = buttonsEnabled
             ) {
                 Text("+")
             }
@@ -103,7 +103,7 @@ fun Calculator(modifier: Modifier = Modifier) {
                     .weight(1f)
                     .padding(8.dp),
                 onClick = { calculate(minus) },
-                enabled = buttonsEnabled
+                enabled = !error1 && !error2
             ) {
                 Text("-")
             }
@@ -112,7 +112,7 @@ fun Calculator(modifier: Modifier = Modifier) {
                     .weight(1f)
                     .padding(8.dp),
                 onClick = { calculate { n1, n2 -> n1 * n2 } },
-                enabled = buttonsEnabled
+                enabled = !error1 && !error2
             ) {
                 Text("*")
             }
@@ -121,7 +121,7 @@ fun Calculator(modifier: Modifier = Modifier) {
                     .weight(1f)
                     .padding(8.dp),
                 onClick = { calculate { n1, n2 -> n1 / n2 } },
-                enabled = buttonsEnabled
+                enabled = !error1 && !error2
             ) {
                 Text("/")
             }
@@ -145,11 +145,12 @@ fun NumberTextField(
         label = { Text(label) },
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
         //isError = value.toDoubleOrNull() == null
-        isError = error
+        isError = error,
+        supportingText = { if (error) Text("Invalid input") }
     )
 }
 
-@Preview(showBackground = true, widthDp = 500, heightDp = 500 )
+@Preview(showBackground = true, widthDp = 500, heightDp = 500)
 @Composable
 fun CalculatorPreview() {
     CalculatorSimpleTheme {
