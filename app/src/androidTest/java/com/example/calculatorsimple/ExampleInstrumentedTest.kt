@@ -30,6 +30,7 @@ class ExampleInstrumentedTest {
         rule.onNodeWithText("Enter a number").performTextClearance()
         rule.onNodeWithText("Enter a number").performTextInput("2")
 
+        // https://kotlinlang.org/docs/scope-functions.html#apply
         rule.onNodeWithText("Enter another number").apply {
             performTextClearance()
             performTextInput("13")
@@ -37,6 +38,10 @@ class ExampleInstrumentedTest {
 
         rule.onNodeWithText("+").performClick()
         rule.onNodeWithText("Result: 15.0").assertExists()
+
+        rule.onNodeWithText("Enter a number").performTextClearance() // no number
+        rule.onNodeWithText("+").performClick()
+        rule.onNodeWithText("Invalid input").assertExists()
     }
 
     @Test
