@@ -72,7 +72,7 @@ fun Calculator(modifier: Modifier = Modifier) {
         NumberTextField(
             value = numberStr1,
             onValueChange = onTextChange1,
-            label = "Enter a number",
+            label = "Enter another number",
             error = error1
         )
         NumberTextField(
